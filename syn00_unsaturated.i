@@ -1,5 +1,5 @@
 # mpiexec -np 4 archaea-opt -i syn00_unsaturated.i # => Num Local DOFs: 10300]
-# 9982 sec. [704 steps] with KT, VanLeer
+# 9950 sec. [710 steps] with KT, VanLeer
 [Mesh]
   [gen]
     type = GeneratedMeshGenerator
@@ -35,7 +35,7 @@
   porepressure = porepressure
   temperature = temperature
   coupling_type = ThermoHydro
-  fp = tabulated_water97
+  fp = tabulated_water95
   #fp = the_simple_fluid
   relative_permeability_exponent = 2 # default
   relative_permeability_type = Corey # 
@@ -271,11 +271,11 @@
     [true_water97]
       type = Water97FluidProperties    # IAPWS-IF97
     []
-    [tabulated_water97]                # tabulation is the only way to make this effective
+    [tabulated_water95]                # tabulation is the only way to make this effective
       type = TabulatedFluidProperties  # the range 273.15 K <= T <= 1073.15 K for p <= 100 MPa should be OK [e.g. 800ºC at 10 km depth]
       # interpolated_properties = 'density enthalpy internal_energy viscosity k cp cv entropy'
       fp = true_water97
-      fluid_property_file = water97_tabulated_extrap_allsides.csv
+      fluid_property_file = water_IAPWS95.csv
     []
   []
 []
@@ -317,7 +317,8 @@
   # start_time = 0             # [s] 0 year | env['time_vals'].max() from archaea03_exodus.e
   #end_time = 50               # [s] 1000 year [i.e. run for another 4000 kyr]
   end_time = 315576000000      # [s] 10000 yr
-  dtmax = 3.2E10               # [s] ~1000 year. advanced parameter. Maximum timestep size in an adaptive run. Default to 1E30   
+  #dtmax = 3.2E10              # [s] ~1000 year. advanced parameter. Maximum timestep size in an adaptive run. Default to 1E30   
+  dtmax = 1.0E9                # 158 year
   nl_max_its = 25              # solver parameter. Max Nonlinear Iterations. Default to 50
   l_max_its = 500              # solver parameter. Max Linear Iterations. Default to 10000
   nl_abs_tol = 1E-06           # solver parameter. Nonlinear absolute tolerance. Default to 1E-50
@@ -328,7 +329,8 @@
   [TimeStepper]                # TimeStepper subsystem [block always nested within the Executioner block]
     type = IterationAdaptiveDT # adjust the timestep based on the number of iterations
     optimal_iterations = 6     # target number of nonlinear iterations [from 6 to 10 this does not seem to affect convergence]
-    dt = 1                     # ~[27 h]
+    #dt = 1                     # ~[27 h]
+    dt = 1024
     growth_factor = 2
     cutback_factor = 0.5
   []
@@ -354,7 +356,7 @@
   [exodus]
     type = Exodus
     output_material_properties = false
-    #interval = 5                          # a bit more than once per year for the initial dt
+    interval = 5                          # a bit more than once per year for the initial dt
     append_date = false                   # datetime of creation of output file
     #execute_on = 'linear nonlinear failed timestep_end'
     execute_on = 'timestep_end'
