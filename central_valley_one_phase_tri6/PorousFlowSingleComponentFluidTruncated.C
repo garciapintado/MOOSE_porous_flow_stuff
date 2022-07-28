@@ -19,7 +19,7 @@ PorousFlowSingleComponentFluidTruncated::validParams()
       "compute_density_and_viscosity", true, "Compute the fluid density and viscosity");
   params.addParam<bool>("compute_internal_energy", true, "Compute the fluid internal energy");
   params.addParam<bool>("compute_enthalpy", true, "Compute the fluid enthalpy");
-  params.addParam<Real>("minimum_pressure",0.0,"minimum input pressure [Pa] used for the FluidProperties"
+  params.addParam<Real>("minimum_pressure",1.0,"minimum input pressure [Pa] used for the FluidProperties"
                        "module. Values lower than this will be truncated to this value" );
   params.addParam<Real>("minimum_temperature",273.2,"minimum input temperature [K] used for the FluidProperties"
                        "module. Values lower than this will be truncated to this value" );
