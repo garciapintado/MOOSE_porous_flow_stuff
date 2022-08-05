@@ -296,7 +296,7 @@
       type = TabulatedFluidProperties  # the range 273.15 K <= T <= 1073.15 K for p <= 100 MPa should be OK [e.g. 800ºC at 10 km depth]
       # interpolated_properties = 'density enthalpy internal_energy viscosity k cp cv entropy'
       fp = true_water97
-      fluid_property_file = water_IAPWS95.csv
+      fluid_property_file = water_IAPWS95_extrap.csv
     []
   []
 []
